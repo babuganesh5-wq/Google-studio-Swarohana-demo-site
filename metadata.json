@@ -1,0 +1,6 @@
+{
+  "name": "Swarohana Carnatic Music Academy",
+  "description": "The interactive learning portal of Swarohana Music Studio, featuring curriculum explorers for Levels 1-3, a digital Shruti Box Practice Studio, and an AI Carnatic Music Tutor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

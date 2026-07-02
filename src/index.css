@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-brand-yellow-50: #FFFDF9;
+  --color-brand-yellow-100: #F2E6D6;
+  --color-brand-yellow-200: #E6D0BA;
+  --color-brand-yellow-500: #8B1E1E;
+  --color-brand-yellow-600: #6F1414;
+  --color-brand-yellow-700: #D4AF37;
+  --color-brand-yellow-800: #B89025;
+  
+  --color-brand-brown-50: #FAF6F0;
+  --color-brand-brown-100: #EFEAE2;
+  --color-brand-brown-200: #E0D8CC;
+  --color-brand-brown-500: #8C7160;
+  --color-brand-brown-600: #6E5647;
+  --color-brand-brown-700: #8B1E1E;
+  --color-brand-brown-800: #2C1A16;
+  --color-brand-brown-900: #1A0F0D;
+  
+  --radius-3xl: 32px;
+  --radius-4xl: 40px;
+}
+
+/* Midnight Dark Theme - late-night practice overrides */
+.dark {
+  --color-brand-brown-50: #0C0706;      /* Deep midnight charcoal-maroon */
+  --color-brand-brown-100: #160D0B;     /* Beautiful card background */
+  --color-brand-brown-200: #2C1A16;     /* Darker container borders & inputs */
+  --color-brand-brown-500: #A89084;     /* Elegant muted body text */
+  --color-brand-brown-600: #C2B3A9;     /* Standard light brown body text */
+  --color-brand-brown-700: #E04D4D;     /* Bright crimson red for interactive highlights */
+  --color-brand-brown-800: #FAF6F0;     /* Primary cream text */
+  --color-brand-brown-900: #FFFDF9;     /* Absolute off-white headings */
+
+  --color-brand-yellow-50: #160D0B;
+  --color-brand-yellow-100: #2C1A16;
+  --color-brand-yellow-200: #38221D;
+  --color-brand-yellow-500: #E04D4D;     /* Glowing red */
+  --color-brand-yellow-600: #F06262;
+  --color-brand-yellow-700: #F1C40F;     /* Vibrant gold */
+  --color-brand-yellow-800: #F39C12;     /* Amber gold */
+}
+
+/* Global utility adapters for Midnight Theme */
+.dark .bg-white {
+  background-color: var(--color-brand-brown-100) !important;
+}
+.dark .bg-white\/90 {
+  background-color: rgba(22, 13, 11, 0.9) !important;
+}
+.dark .bg-brand-brown-50\/30 {
+  background-color: rgba(44, 26, 22, 0.3) !important;
+}
+.dark .bg-brand-brown-50\/40 {
+  background-color: rgba(44, 26, 22, 0.4) !important;
+}
+.dark .bg-brand-brown-50\/50 {
+  background-color: rgba(44, 26, 22, 0.5) !important;
+}
+.dark .bg-brand-brown-50 {
+  background-color: var(--color-brand-brown-50) !important;
+}
+.dark .text-gray-900 {
+  color: var(--color-brand-brown-900) !important;
+}
+.dark .text-gray-800 {
+  color: var(--color-brand-brown-800) !important;
+}
+.dark .text-gray-700 {
+  color: var(--color-brand-brown-800) !important;
+}
+.dark .text-gray-650 {
+  color: var(--color-brand-brown-600) !important;
+}
+.dark .text-gray-600 {
+  color: var(--color-brand-brown-600) !important;
+}
+.dark .text-gray-500 {
+  color: var(--color-brand-brown-500) !important;
+}
+.dark .text-gray-400 {
+  color: var(--color-brand-brown-500) !important;
+}
+.dark .border-brand-brown-100 {
+  border-color: var(--color-brand-brown-200) !important;
+}
+.dark .border-gray-100 {
+  border-color: var(--color-brand-brown-200) !important;
+}
+.dark .border-gray-200 {
+  border-color: var(--color-brand-brown-200) !important;
+}
+
+/* Precise Dark Mode Contrast Safeguards for bg-brand-brown-900 elements */
+.dark .bg-brand-brown-900 {
+  background-color: #160D0B !important; /* Elegant dark card background */
+}
+
+/* User message bubble contrast safeguard in AI Tutor */
+.dark .bg-brand-brown-900.text-white {
+  background-color: #2C1A16 !important;
+  color: #FFFDF9 !important;
+}
+
+/* Recharts Custom Tooltip in BookingPortal / Laya Tracker */
+.dark .bg-brand-brown-900.text-white.p-3 {
+  background-color: #2C1A16 !important;
+  color: #FFFDF9 !important;
+}
+
+/* Active Tonic Pitch Selector Button in PracticeStudio */
+.dark button.bg-brand-brown-900 {
+  background-color: var(--color-brand-brown-700) !important; /* Crimson Red Highlight */
+  color: #FFFDF9 !important;
+}
+
+/* Swara Notation block in SyllabusExplorer */
+.dark pre.bg-brand-brown-900 {
+  background-color: #0C0706 !important;
+  color: #F1C40F !important; /* Vibrant legibility gold */
+  border-color: #2C1A16 !important;
+}
+
+/* Fullscreen/Lightbox backdrop overlay in GalleryTab */
+.dark .bg-brand-brown-900\/60 {
+  background-color: rgba(12, 7, 6, 0.9) !important;
+}
+
+/* Dark Mode Footer Contrast Overrides to keep it deep slate and crisp */
+.dark footer {
+  background-color: #080404 !important;
+  border-top-color: #1A0F0D !important;
+}
+.dark footer h4 {
+  color: #F1C40F !important; /* Glowing gold headings */
+}
+.dark footer p, .dark footer span, .dark footer button {
+  color: #FAF6F0 !important;
+}
+.dark footer button:hover {
+  color: #E04D4D !important;
+}
+
+/* Custom scrolling classes & general resets */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Optimized, lightweight transitions for responsive, buttery-smooth theme-switching */
+body,
+header,
+main,
+footer,
+nav,
+section,
+article,
+div.bg-white,
+div.bg-brand-brown-50,
+div.bg-brand-brown-50\/20,
+div.bg-brand-brown-50\/30,
+div.bg-brand-brown-50\/40,
+div.bg-brand-brown-50\/50,
+.border-brand-brown-100,
+.border-gray-100,
+.border-gray-200 {
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), border-color 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+h1, h2, h3, h4, h5, h6,
+p,
+span,
+a,
+button,
+input,
+select,
+textarea,
+label,
+svg {
+  transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1), background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure inputs, select lists, and textareas adapt their text colors properly in light/dark themes */
+input, select, textarea {
+  color: var(--color-brand-brown-900) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--color-brand-brown-500) !important;
+}
+
+/* Ensure dropdown options have distinct, highly legible text and backgrounds */
+option {
+  background-color: var(--color-brand-brown-50) !important;
+  color: var(--color-brand-brown-900) !important;
+}
+
+/* Animations and decorative items */
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.35;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+}
+
+@keyframes tanpura-wave {
+  0%, 100% {
+    transform: scale(0.98);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.85;
+  }
+}
+
+.animate-tanpura-wave {
+  animation: tanpura-wave 4s ease-in-out infinite;
+}
