@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SHRUTI_PITCHES } from "../data";
 import { ShrutiPitch } from "../types";
-import { Play, Square, Volume2, Music, Clock, Circle } from "lucide-react";
+import { Play, Square, Volume2, Music, Clock, Circle, Info } from "lucide-react";
 
 export default function PracticeStudio({
   selectedSyllabusPitch,
@@ -76,6 +76,16 @@ export default function PracticeStudio({
     }
   };
 
+  const stopDroneInstantly = () => {
+    oscillatorsRef.current.forEach((osc) => {
+      try {
+        osc.stop();
+      } catch (e) {}
+    });
+    oscillatorsRef.current = [];
+    setIsPlaying(false);
+  };
+
   const startDrone = () => {
     try {
       // Ensure AudioContext is created on user gesture
@@ -88,7 +98,7 @@ export default function PracticeStudio({
         ctx.resume();
       }
 
-      stopDrone(); // Clear any existing oscillators
+      stopDroneInstantly(); // Clear any existing oscillators instantly
 
       // Create main gain node for volume control
       const mainGain = ctx.createGain();
@@ -160,14 +170,16 @@ export default function PracticeStudio({
       }
     }
 
+    const currentOscs = [...oscillatorsRef.current];
+    oscillatorsRef.current = [];
+    setIsPlaying(false);
+
     setTimeout(() => {
-      oscillatorsRef.current.forEach((osc) => {
+      currentOscs.forEach((osc) => {
         try {
           osc.stop();
         } catch (e) {}
       });
-      oscillatorsRef.current = [];
-      setIsPlaying(false);
     }, 320);
   };
 
@@ -316,7 +328,17 @@ export default function PracticeStudio({
   };
 
   return (
-    <div className="grid md:grid-cols-2 gap-8">
+    <div className="space-y-6">
+      {/* Browser iFrame audio permissions advisory banner */}
+      <div className="bg-[#FFFDF9] border border-brand-yellow-200/60 rounded-2xl p-4 flex items-start gap-3 shadow-xs">
+        <Info className="w-5 h-5 text-brand-yellow-600 flex-shrink-0 mt-0.5" />
+        <div className="text-xs md:text-sm text-brand-brown-800 leading-relaxed">
+          <span className="font-extrabold text-brand-brown-900 block md:inline md:mr-1">🎵 Audio Notice:</span>
+          If you don't hear any sound from the Shruthi Box or Metronome, browsers may be blocking audio inside the inline preview frame. Click <strong className="text-brand-yellow-700">"Open in New Tab"</strong> at the top right of the screen to enable full audio playback instantly!
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8">
       {/* LEFT PANEL: Digital Shruti Box */}
       <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-brand-brown-100 flex flex-col justify-between">
         <div>
@@ -538,7 +560,20 @@ export default function PracticeStudio({
 
         {/* Metronome Control Button */}
         <button
-          onClick={() => setIsMetronomeActive(!isMetronomeActive)}
+          onClick={() => {
+            try {
+              if (!audioContextRef.current) {
+                audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+              }
+              const ctx = audioContextRef.current;
+              if (ctx.state === "suspended") {
+                ctx.resume();
+              }
+            } catch (err) {
+              console.error("Failed to initialize audio on metronome click:", err);
+            }
+            setIsMetronomeActive(!isMetronomeActive);
+          }}
           className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all ${
             isMetronomeActive
               ? "bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-100"
@@ -556,6 +591,7 @@ export default function PracticeStudio({
           )}
         </button>
       </div>
+    </div>
     </div>
   );
 }

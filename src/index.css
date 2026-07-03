@@ -242,3 +242,51 @@ option {
 .animate-tanpura-wave {
   animation: tanpura-wave 4s ease-in-out infinite;
 }
+
+/* 🎪 Infinite Testimonial Marquee Scroll Animations */
+@keyframes marquee-scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 12px));
+  }
+}
+
+@keyframes marquee-scroll-right {
+  0% {
+    transform: translateX(calc(-50% - 12px));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll-left 35s linear infinite;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll-right 35s linear infinite;
+}
+
+/* 🎨 Glassmorphism & Gold Card Glow Effects */
+.card-glow-yellow {
+  box-shadow: 0 4px 30px rgba(212, 175, 55, 0.03);
+  backdrop-filter: blur(5px);
+}
+.card-glow-yellow:hover {
+  box-shadow: 0 10px 40px rgba(212, 175, 55, 0.08);
+}
+
+.dark .card-glow-yellow {
+  box-shadow: 0 4px 30px rgba(224, 77, 77, 0.02);
+}
+.dark .card-glow-yellow:hover {
+  box-shadow: 0 10px 40px rgba(224, 77, 77, 0.06);
+}
+

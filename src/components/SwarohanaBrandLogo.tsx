@@ -5,6 +5,7 @@ interface SwarohanaBrandLogoProps {
   theme: "light" | "dark";
   showText?: boolean;
   size?: "sm" | "md" | "lg";
+  layout?: "horizontal" | "vertical";
 }
 
 export default function SwarohanaBrandLogo({
@@ -12,12 +13,20 @@ export default function SwarohanaBrandLogo({
   theme,
   showText = true,
   size = "md",
+  layout = "horizontal",
 }: SwarohanaBrandLogoProps) {
-  // Determine dimensions based on size
+  // Determine dimensions based on size (horizontal layout)
   const iconSizes = {
     sm: "w-8 h-8",
-    md: "w-12 h-12",
-    lg: "w-16 h-16",
+    md: "w-9 h-9 md:w-12 md:h-12",
+    lg: "w-12 h-12 md:w-16 md:h-16",
+  };
+
+  // Determine dimensions based on size (vertical layout)
+  const verticalIconSizes = {
+    sm: "w-12 h-16",
+    md: "w-16 h-22 md:w-20 md:h-26",
+    lg: "w-20 h-26 md:w-28 md:h-36",
   };
 
   // SVG stylized S-curve/veena musical notes symbol inside the yellow box
@@ -69,17 +78,72 @@ export default function SwarohanaBrandLogo({
   );
 
   if (!showText) {
-    return <div className={iconSizes[size]}>{renderSwarohanaSymbol()}</div>;
+    return (
+      <div className={layout === "vertical" ? verticalIconSizes[size] : iconSizes[size]}>
+        {renderSwarohanaSymbol()}
+      </div>
+    );
   }
 
   // Define text and subtitle colors based on active theme
   const subtitleColorClass =
     theme === "dark"
       ? "text-brand-yellow-700 font-extrabold"
-      : "text-brand-brown-800 font-extrabold";
+      : "text-[#3D281A] font-extrabold";
 
+  if (layout === "vertical") {
+    return (
+      <div className="flex flex-col items-center text-center gap-2 select-none">
+        {/* Swarohana Yellow Emblem Box */}
+        <div className={`${verticalIconSizes[size]} flex-shrink-0`}>
+          {renderSwarohanaSymbol()}
+        </div>
+
+        {/* Swarohana Typographic Brand Layout */}
+        <div className="flex flex-col items-center">
+          {/* Dark Brown Banner Card with Swarohana text inside */}
+          <div className="bg-[#3D281A] dark:bg-[#2C1A16] border border-[#4E3524] dark:border-[#FFC72C]/50 px-3 md:px-4 py-1 md:py-1.5 rounded-md shadow-sm">
+            {language === "en" ? (
+              <span
+                className="font-serif text-base md:text-xl font-extrabold tracking-wide text-[#FFFDF9]"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Swarohana
+              </span>
+            ) : (
+              <span
+                className="font-serif text-[11px] md:text-base font-extrabold tracking-wider text-[#FFFDF9]"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                ஸ்வரோஹனா
+              </span>
+            )}
+          </div>
+
+          {/* Subtitle text positioned perfectly underneath, fully high contrast in dark mode */}
+          <div className="mt-1 md:mt-1.5 text-center">
+            {language === "en" ? (
+              <span
+                className={`text-[8px] md:text-[10px] uppercase tracking-[0.24em] font-mono ${subtitleColorClass}`}
+              >
+                MUSIC STUDIO
+              </span>
+            ) : (
+              <span
+                className={`text-[8px] md:text-[10px] uppercase tracking-[0.16em] font-serif font-extrabold ${subtitleColorClass}`}
+              >
+                மியூசிக் ஸ்டுடியோஸ்
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Horizontal layout (default)
   return (
-    <div className="flex items-center gap-3 select-none">
+    <div className="flex items-center gap-2 md:gap-3 select-none">
       {/* Swarohana Yellow Emblem Box */}
       <div className={`${iconSizes[size]} flex-shrink-0`}>
         {renderSwarohanaSymbol()}
@@ -88,21 +152,17 @@ export default function SwarohanaBrandLogo({
       {/* Swarohana Typographic Brand Layout */}
       <div className="flex flex-col justify-center">
         {/* Dark Brown Banner Card with Swarohana text inside */}
-        <div className={`${
-          theme === "dark"
-            ? "bg-[#2C1A16] border border-[#FFC72C]/50"
-            : "bg-[#3D281A] border border-[#4E3524]"
-        } px-3.5 py-1 rounded-md shadow-xs`}>
+        <div className="bg-[#3D281A] dark:bg-[#2C1A16] border border-[#4E3524] dark:border-[#FFC72C]/50 px-2.5 md:px-3.5 py-0.5 md:py-1 rounded-md shadow-xs">
           {language === "en" ? (
             <span
-              className="font-serif text-lg font-extrabold tracking-wide text-[#FFFDF9]"
+              className="font-serif text-sm md:text-lg font-extrabold tracking-wide text-[#FFFDF9]"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
               Swarohana
             </span>
           ) : (
             <span
-              className="font-serif text-sm font-extrabold tracking-wider text-[#FFFDF9]"
+              className="font-serif text-[10px] md:text-sm font-extrabold tracking-wider text-[#FFFDF9]"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
               ஸ்வரோஹனா
@@ -111,16 +171,16 @@ export default function SwarohanaBrandLogo({
         </div>
 
         {/* Subtitle text positioned perfectly underneath, fully high contrast in dark mode */}
-        <div className="pl-1 mt-1">
+        <div className="pl-0.5 mt-0.5 md:mt-1">
           {language === "en" ? (
             <span
-              className={`text-[9px] uppercase tracking-[0.24em] font-mono ${subtitleColorClass}`}
+              className={`text-[7px] md:text-[9px] uppercase tracking-[0.24em] font-mono ${subtitleColorClass}`}
             >
               MUSIC STUDIO
             </span>
           ) : (
             <span
-              className={`text-[9px] uppercase tracking-[0.16em] font-serif font-extrabold ${subtitleColorClass}`}
+              className={`text-[7px] md:text-[9px] uppercase tracking-[0.16em] font-serif font-extrabold ${subtitleColorClass}`}
             >
               மியூசிக் ஸ்டுடியோஸ்
             </span>

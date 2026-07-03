@@ -20,12 +20,15 @@ import {
   Moon,
   Trophy,
   Image as ImageIcon,
-  Languages
+  Languages,
+  Menu,
+  X
 } from "lucide-react";
 import SwarohanaBrandLogo from "./components/SwarohanaBrandLogo";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>("home");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     const saved = localStorage.getItem("swarohana_theme");
     return (saved as "light" | "dark") || "light";
@@ -116,6 +119,7 @@ export default function App() {
             onSelectTab={(tab) => setActiveTab(tab)}
             t={t}
             language={language}
+            theme={theme}
             activeRegistration={activeRegistration}
             syllabusChecklist={syllabusChecklist}
           />
@@ -167,6 +171,7 @@ export default function App() {
             onSelectTab={(tab) => setActiveTab(tab)}
             t={t}
             language={language}
+            theme={theme}
             activeRegistration={activeRegistration}
             syllabusChecklist={syllabusChecklist}
           />
@@ -188,16 +193,16 @@ export default function App() {
     <div className="min-h-screen bg-brand-brown-50 text-brand-brown-900 flex flex-col justify-between selection:bg-brand-yellow-100 selection:text-brand-brown-900 transition-colors duration-300">
       
       {/* GLOBAL HEADER BAR */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-brand-brown-100 px-4 md:px-8 py-4 shadow-xs">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
+      <header className="sticky top-0 z-50 bg-white/95 dark:bg-[#160D0B]/95 backdrop-blur-md border-b border-brand-brown-100 dark:border-brand-brown-200/20 px-4 md:px-8 py-3.5 shadow-xs transition-colors">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           
           {/* Academy Brand Logo */}
-          <div className="cursor-pointer self-center lg:self-auto" onClick={() => setActiveTab("home")}>
+          <div className="cursor-pointer flex-shrink-0" onClick={() => { setActiveTab("home"); setMobileMenuOpen(false); }}>
             <SwarohanaBrandLogo language={language} theme={theme} size="md" />
           </div>
 
-          {/* Navigation Items (Tabs) */}
-          <nav className="flex items-center gap-1 bg-brand-brown-50 p-1 rounded-2xl border border-brand-brown-100 overflow-x-auto max-w-full scrollbar-none py-1 px-1.5">
+          {/* Desktop Navigation Items (Tabs) - Visible on xl+ */}
+          <nav className="hidden xl:flex items-center gap-1 bg-brand-brown-50 dark:bg-brand-brown-200/10 p-1 rounded-2xl border border-brand-brown-100 dark:border-brand-brown-200/20 py-1 px-1.5">
             {navItems.map((item) => (
               <button
                 key={item.id}
@@ -211,7 +216,7 @@ export default function App() {
                 className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   activeTab === item.id
                     ? "bg-brand-yellow-500 text-white shadow-xs font-extrabold"
-                    : "text-brand-brown-900/80 hover:text-brand-brown-900 hover:bg-brand-brown-100/60"
+                    : "text-brand-brown-500 hover:text-brand-brown-900 dark:text-brand-brown-500 dark:hover:text-[#FFFDF9] hover:bg-brand-brown-100/60 dark:hover:bg-brand-brown-200/20"
                 }`}
               >
                 {item.icon}
@@ -220,18 +225,17 @@ export default function App() {
             ))}
           </nav>
 
-          {/* Controls: Theme & Language Toggle & CTA */}
-          <div className="flex items-center flex-wrap justify-center gap-2.5">
-            
+          {/* Controls: Theme & Language Toggle & CTA - Hidden on mobile, shown on xl+ */}
+          <div className="hidden xl:flex items-center gap-2.5">
             {/* Language Switcher button */}
             <button
               onClick={() => setLanguage(language === "en" ? "ta" : "en")}
-              className="p-2.5 rounded-xl border border-brand-brown-100 dark:border-brand-brown-200/50 hover:bg-brand-brown-100/50 dark:hover:bg-brand-brown-200/50 text-brand-brown-700 dark:text-brand-brown-100 transition-all shadow-2xs flex items-center gap-2 cursor-pointer"
+              className="p-2.5 rounded-xl border border-brand-brown-100 dark:border-brand-brown-200/50 hover:bg-brand-brown-100/50 dark:hover:bg-brand-brown-200/50 text-brand-brown-700 dark:text-brand-brown-800 transition-all shadow-2xs flex items-center gap-2 cursor-pointer"
               title={language === "en" ? "தமிழ் மொழிக்கு மாறவும்" : "Switch to English"}
               aria-label="Toggle language"
             >
               <Languages className="w-4 h-4 text-brand-yellow-600 dark:text-brand-yellow-500" />
-              <span className="text-xs font-serif font-extrabold">
+              <span className="text-xs font-serif font-extrabold text-brand-brown-800 dark:text-brand-brown-800">
                 {language === "en" ? "தமிழ்" : "English"}
               </span>
             </button>
@@ -265,11 +269,99 @@ export default function App() {
             </button>
           </div>
 
+          {/* Mobile Actions: Language switch, Theme switch, Hamburger button - Shown on xl- */}
+          <div className="flex xl:hidden items-center gap-2">
+            {/* Quick Language switch icon on mobile */}
+            <button
+              onClick={() => setLanguage(language === "en" ? "ta" : "en")}
+              className="p-2 rounded-lg border border-brand-brown-100 dark:border-brand-brown-200/50 text-brand-brown-700 dark:text-brand-brown-800 cursor-pointer"
+              title={language === "en" ? "தமிழ்" : "English"}
+            >
+              <Languages className="w-3.5 h-3.5 text-brand-yellow-600 dark:text-brand-yellow-500" />
+            </button>
+
+            {/* Quick Theme Switcher icon on mobile */}
+            <button
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className="p-2 rounded-lg border border-brand-brown-100 dark:border-brand-brown-200/50 text-brand-brown-700 dark:text-brand-brown-800 cursor-pointer"
+            >
+              {theme === "light" ? (
+                <Moon className="w-3.5 h-3.5" />
+              ) : (
+                <Sun className="w-3.5 h-3.5 text-brand-yellow-500" />
+              )}
+            </button>
+
+            {/* Hamburger Mobile Menu Toggle Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg border border-brand-brown-100 dark:border-brand-brown-200/50 text-brand-brown-800 dark:text-brand-brown-800 bg-brand-brown-50 dark:bg-brand-brown-200/10 cursor-pointer hover:bg-brand-brown-100 transition-all"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+
         </div>
+
+        {/* Responsive Mobile Drawer Menu (Framer-Motion animated!) */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="xl:hidden mt-4 overflow-hidden border-t border-brand-brown-100 dark:border-brand-brown-200/20 pt-4"
+            >
+              <div className="flex flex-col gap-1.5 pb-4">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setMobileMenuOpen(false);
+                      if (item.id !== "practice") {
+                        setSelectedPracticePitch(undefined);
+                      }
+                    }}
+                    className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                      activeTab === item.id
+                        ? "bg-brand-yellow-500 text-white font-extrabold shadow-sm"
+                        : "text-brand-brown-500 hover:text-brand-brown-900 dark:text-brand-brown-500 dark:hover:text-[#FFFDF9] hover:bg-brand-brown-100/50 dark:hover:bg-brand-brown-200/10"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={activeTab === item.id ? "text-white" : "text-brand-brown-500 dark:text-brand-brown-500"}>
+                        {item.icon}
+                      </span>
+                      <span>{item.label}</span>
+                    </div>
+                    <span className="text-[10px] opacity-60">→</span>
+                  </button>
+                ))}
+
+                {/* Mobile Book CTA */}
+                <div className="mt-4 pt-4 border-t border-brand-brown-100 dark:border-brand-brown-200/10 px-1">
+                  <button
+                    onClick={() => {
+                      setActiveTab("booking");
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full py-3.5 text-xs font-extrabold text-white bg-brand-yellow-500 hover:bg-brand-yellow-600 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-brand-yellow-600"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5" />
+                    <span>{t.book_trial}</span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* MAIN VIEW CONTROLLER (WITH ANIMATIONS) */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 py-8">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 md:px-8 py-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -286,7 +378,7 @@ export default function App() {
 
       {/* FOOTER BAR */}
       <footer className="bg-brand-brown-900 text-brand-brown-100 border-t border-brand-brown-800 py-12 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8 text-center md:text-left">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-center md:text-left">
           
           {/* Footer Branding Column */}
           <div className="space-y-3">
@@ -326,11 +418,33 @@ export default function App() {
             <h4 className="text-xs font-extrabold uppercase tracking-widest text-brand-yellow-500 font-sans">
               {language === "en" ? "Contact & Hours" : "தொடர்பு & நேரம்"}
             </h4>
-            <p className="text-brand-brown-200/80 font-medium">
-              {language === "en" ? "Swarohana Music Studios, Chennai, India" : "ஸ்வரோஹனா மியூசிக் ஸ்டுடியோஸ், சென்னை, இந்தியா"}<br />
-              Email: contact@swarohana.com<br />
-              {language === "en" ? "Hours: Mon - Sun (8:00 AM - 9:00 PM IST)" : "நேரம்: திங்கள் - ஞாயிறு (காலை 8:00 - இரவு 9:00 IST)"}
-            </p>
+            <div className="text-brand-brown-200/80 font-medium leading-relaxed space-y-1">
+              <p className="font-bold text-brand-yellow-500">
+                {language === "en" ? "Swarohana Music Academy" : "ஸ்வரோஹனா மியூசிக் அகாடமி"}
+              </p>
+              {language === "en" ? (
+                <p>
+                  54. Shanmugapuram, O. Rajapalayam Post,<br />
+                  Tiruchengode Tk, Namakkal District, Pin: 637211
+                </p>
+              ) : (
+                <p>
+                  54. சண்முகபுரம், ஒ. ராஜபாளையம் அஞ்சல்,<br />
+                  திருச்செங்கோடு தாலுகா, நாமக்கல் மாவட்டம், பின்கோடு: 637211
+                </p>
+              )}
+              <p>
+                {language === "en" ? "WhatsApp: " : "வாட்ஸ்அப்: "}
+                <a
+                  href="https://wa.me/919842592718"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-brand-yellow-500 font-extrabold hover:underline"
+                >
+                  98425 92718
+                </a>
+              </p>
+            </div>
             <div className="pt-2 text-[10px] text-brand-yellow-500/40 font-bold uppercase tracking-widest">
               {language === "en" ? "Built on ancient heritage & modern technology" : "பண்டைய பாரம்பரியம் மற்றும் நவீன தொழில்நுட்பம்"}
             </div>
@@ -339,7 +453,7 @@ export default function App() {
         </div>
 
         {/* Legal bar */}
-        <div className="max-w-7xl mx-auto border-t border-brand-brown-800 mt-8 pt-6 text-center text-[10px] text-brand-brown-400 font-semibold uppercase tracking-widest">
+        <div className="max-w-6xl mx-auto border-t border-brand-brown-800 mt-8 pt-6 text-center text-[10px] text-brand-brown-400 font-semibold uppercase tracking-widest">
           © {new Date().getFullYear()} Swarohana Music Studios. {language === "en" ? "All rights reserved." : "அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."}
         </div>
       </footer>
